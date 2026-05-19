@@ -11,7 +11,7 @@ internal import SwiftUI
 
 class ListViewModel: ObservableObject {
     
-   @Published var items: [ItemModel] = []
+    @Published var items: [ItemModel] = []
     
     init () {
         getItems()
@@ -34,4 +34,16 @@ class ListViewModel: ObservableObject {
         items.move(fromOffsets: from, toOffset: to)
     }
     
-}
+    func addItem(title: String) {
+        let newItem = ItemModel(title: title, isCompleted: false)
+        items.append(newItem)
+    }
+    
+    func updateItem(item: ItemModel) {
+        if let index = items.firstIndex(where: { $0.id == item.id}) {
+            items[index] = item.updateCompleiton()
+        }
+            
+        }
+                                        
+    }

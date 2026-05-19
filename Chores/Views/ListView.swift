@@ -15,7 +15,12 @@ struct ListView: View {
         List{
             ForEach(listViewModel.items){ item in
                 ListRowView(item: item)
-            }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation(.linear){
+                            listViewModel.updateItem(item: item)
+                        }
+                    }            }
             .onDelete(perform: listViewModel.deleteItem)
             .onMove(perform: listViewModel.moveItem)
         }
@@ -34,6 +39,7 @@ struct ListView: View {
         NavigationView {
             ListView()
         }
+        .environmentObject(ListViewModel())
     }
 
 
