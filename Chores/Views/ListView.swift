@@ -5,23 +5,19 @@
 //  Created by Wubbo Boiten on 19/05/2026.
 //
 
-import SwiftUI
+internal import SwiftUI
 
 struct ListView: View {
     
-    @State var items: [ItemModel] = [
-        ItemModel(title: "first task", isCompleted: false),
-        ItemModel(title: "second task", isCompleted: false),
-        ItemModel(title: "third task", isCompleted: false)
-    ]
-    
-    
+    @EnvironmentObject var listViewModel: ListViewModel
+
     var body: some View {
         List{
-            ForEach(items){ item in
-                Text("hi")
-                //ListRowView(title: item)
+            ForEach(listViewModel.items){ item in
+                ListRowView(item: item)
             }
+            .onDelete(perform: listViewModel.deleteItem)
+            .onMove(perform: listViewModel.moveItem)
         }
         .listStyle(PlainListStyle())
         .navigationTitle("Todo:")
@@ -33,11 +29,11 @@ struct ListView: View {
         )
     }
 }
-
-#Preview {
-    NavigationView {
-        ListView()
+    
+    #Preview {
+        NavigationView {
+            ListView()
+        }
     }
-}
 
 

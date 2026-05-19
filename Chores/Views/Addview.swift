@@ -5,7 +5,7 @@
 //  Created by Wubbo Boiten on 19/05/2026.
 //
 
-import SwiftUI
+internal import SwiftUI
 
 struct Addview: View {
     
