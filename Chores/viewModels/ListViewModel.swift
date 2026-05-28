@@ -38,8 +38,8 @@ class ListViewModel: ObservableObject {
         items.move(fromOffsets: from, toOffset: to)
     }
     
-    func addItem(title: String) {
-        let newItem = ItemModel(title: title, isCompleted: false)
+    func addItem(title: String, frequency: Frequency) {  
+        let newItem = ItemModel(title: title, isCompleted: false, frequency: frequency)
         items.append(newItem)
     }
     
