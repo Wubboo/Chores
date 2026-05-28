@@ -30,8 +30,10 @@ class ListViewModel: ObservableObject {
         self.items = savedItems
     }
     
-    func deleteItem(indexSet: IndexSet) {
-        items.remove(atOffsets: indexSet)
+    func deleteItem(indexSet: IndexSet, frequency: Frequency) {
+        let filteredItems = items.filter { $0.frequency == frequency }
+        let idsToDelete = indexSet.map { filteredItems[$0].id }
+        items.removeAll { idsToDelete.contains($0.id) }
     }
     
     func moveItem(from: IndexSet, to: Int){

@@ -27,7 +27,9 @@ struct ListView: View {
                         }
                     }
             }
-            .onDelete(perform: listViewModel.deleteItem)
+            .onDelete { indexSet in
+                listViewModel.deleteItem(indexSet: indexSet, frequency: selectedFrequency)
+            }
             .onMove(perform: listViewModel.moveItem)
         }
         .listStyle(PlainListStyle())

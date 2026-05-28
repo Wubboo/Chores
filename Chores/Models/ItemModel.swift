@@ -27,6 +27,6 @@ struct ItemModel: Identifiable, Codable {
     }
 
     func updateCompleiton() -> ItemModel {
-        return ItemModel(id: id, title: title, isCompleted: !isCompleted, frequency: frequency) // was losing frequency!
+        return ItemModel(id: id, title: title, isCompleted: !isCompleted, frequency: frequency) 
     }
 }

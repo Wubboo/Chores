@@ -31,6 +31,8 @@ struct Addview: View {
                         .background(Color.accentColor)
                         .cornerRadius(10)
                 }
+                .disabled(textFieldText.trimmingCharacters(in: .whitespaces).isEmpty)
+                .opacity(textFieldText.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1.0)
             }
             .padding(14)
         }
