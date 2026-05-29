@@ -36,8 +36,17 @@ class ListViewModel: ObservableObject {
         items.removeAll { idsToDelete.contains($0.id) }
     }
     
-    func moveItem(from: IndexSet, to: Int){
-        items.move(fromOffsets: from, toOffset: to)
+    func moveItem(from: IndexSet, to: Int, frequency: Frequency) {
+        let filteredItems = items.filter { $0.frequency == frequency }
+        var filteredIds = filteredItems.map { $0.id }
+        filteredIds.move(fromOffsets: from, toOffset: to)
+        
+        // rebuild full array preserving other frequencies
+        let otherItems = items.filter { $0.frequency != frequency }
+        let reorderedFiltered = filteredIds.compactMap { id in
+            items.first { $0.id == id }
+        }
+        items = reorderedFiltered + otherItems
     }
     
     func addItem(title: String, frequency: Frequency) {  
