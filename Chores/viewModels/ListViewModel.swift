@@ -65,4 +65,11 @@ class ListViewModel: ObservableObject {
             UserDefaults.standard.set(encodedData, forKey: itemsKey)
         }
     }
+    
+    func resetItems(frequency: Frequency) {
+        items = items.map { item in
+            item.frequency == frequency ? ItemModel(id: item.id, title: item.title, isCompleted: false, frequency: item.frequency) : item
+        }
+    }
+    
     }

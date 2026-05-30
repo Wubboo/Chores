@@ -11,6 +11,7 @@ struct ListView: View {
 
     @EnvironmentObject var listViewModel: ListViewModel
     @State private var selectedFrequency: Frequency = .daily
+    @State private var showResetAlert: Bool = false
 
     var filteredItems: [ItemModel] {
         listViewModel.items.filter { $0.frequency == selectedFrequency }
@@ -57,21 +58,37 @@ struct ListView: View {
                                 listViewModel.updateItem(item: item)
                             }
                         }
-                }  // closes ForEach
+                }
                 .onDelete { indexSet in
                     listViewModel.deleteItem(indexSet: indexSet, frequency: selectedFrequency)
                 }
                 .onMove { indexSet, toOffset in
                     listViewModel.moveItem(from: indexSet, to: toOffset, frequency: selectedFrequency)
                 }
-            }  // closes List
+            }
             .listStyle(PlainListStyle())
-        }  // closes VStack
+        }
         .navigationTitle("\(selectedFrequency.rawValue)  \(completedCount)/\(totalCount)")
         .navigationBarItems(
             leading: EditButton(),
-            trailing: NavigationLink("Add", destination: Addview(frequency: selectedFrequency))
+            trailing: HStack {
+                Button(action: {
+                    showResetAlert = true
+                }) {
+                    Image(systemName: "arrow.counterclockwise")
+                }
+                NavigationLink("Add", destination: Addview(frequency: selectedFrequency))
+            }
+                
         )
+        .alert("Reset Chores?", isPresented: $showResetAlert) {
+            Button("Resetten", role: .destructive) {
+                listViewModel.resetItems(frequency: selectedFrequency)
+            }
+            Button("Annuleren", role: .cancel) {}
+        } message: {
+            Text("All chores in  \(selectedFrequency.rawValue) will be marked incomplete.")
+        }
         .safeAreaInset(edge: .bottom) {
             Picker("Frequency", selection: $selectedFrequency) {
                 ForEach(Frequency.allCases, id: \.self) { freq in
