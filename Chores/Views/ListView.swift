@@ -50,20 +50,35 @@ struct ListView: View {
             .padding(.vertical, 8)
 
             List {
-                ForEach(filteredItems) { item in
-                    ListRowView(item: item)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            withAnimation(.linear) {
-                                listViewModel.updateItem(item: item)
+                if filteredItems.isEmpty {
+                    VStack(spacing: 12) {
+                        Image(systemName: "checklist")
+                            .font(.largeTitle)
+                            .foregroundColor(.secondary)
+                        Text("No \(selectedFrequency.rawValue) tasks yet")
+                            .font(.headline)
+                        Text("Tap \"Add\" to get started")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                } else {
+                    ForEach(filteredItems) { item in
+                        ListRowView(item: item)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                withAnimation(.linear) {
+                                    listViewModel.updateItem(item: item)
+                                }
                             }
-                        }
-                }
-                .onDelete { indexSet in
-                    listViewModel.deleteItem(indexSet: indexSet, frequency: selectedFrequency)
-                }
-                .onMove { indexSet, toOffset in
-                    listViewModel.moveItem(from: indexSet, to: toOffset, frequency: selectedFrequency)
+                    }
+                    .onDelete { indexSet in
+                        listViewModel.deleteItem(indexSet: indexSet, frequency: selectedFrequency)
+                    }
+                    .onMove { indexSet, toOffset in
+                        listViewModel.moveItem(from: indexSet, to: toOffset, frequency: selectedFrequency)
+                    }
                 }
             }
             .listStyle(PlainListStyle())
@@ -79,15 +94,14 @@ struct ListView: View {
                 }
                 NavigationLink("Add", destination: Addview(frequency: selectedFrequency))
             }
-                
         )
         .alert("Reset Chores?", isPresented: $showResetAlert) {
-            Button("Reset", role: .destructive) {
+            Button("Resetten", role: .destructive) {
                 listViewModel.resetItems(frequency: selectedFrequency)
             }
-            Button("Cancel", role: .cancel) {}
+            Button("Annuleren", role: .cancel) {}
         } message: {
-            Text("All chores in  \(selectedFrequency.rawValue) will be marked incomplete.")
+            Text("All chores in \(selectedFrequency.rawValue) will be marked incomplete.")
         }
         .safeAreaInset(edge: .bottom) {
             Picker("Frequency", selection: $selectedFrequency) {
