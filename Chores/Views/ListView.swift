@@ -96,10 +96,10 @@ struct ListView: View {
             }
         )
         .alert("Reset Chores?", isPresented: $showResetAlert) {
-            Button("Resetten", role: .destructive) {
+            Button("Reset", role: .destructive) {
                 listViewModel.resetItems(frequency: selectedFrequency)
             }
-            Button("Annuleren", role: .cancel) {}
+            Button("Cancel", role: .cancel) {}
         } message: {
             Text("All chores in \(selectedFrequency.rawValue) will be marked incomplete.")
         }
